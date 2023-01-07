@@ -1,3 +1,4 @@
-flask
-flask_restful
-precommit
+Flask==2.2.2
+Flask-RESTful==0.3.9
+pre-commit==2.21.0
+requests==2.22.0
