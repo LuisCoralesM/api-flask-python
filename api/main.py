@@ -1,8 +1,6 @@
 from flask import Flask, request
-import requests
+from utils import *
 
-api_url = "https://pokeapi.co/api/v2/pokemon/"
-headers = {'Accept': 'application/json'}
 
 app = Flask(__name__)
 
@@ -16,28 +14,29 @@ pokemon = {
 @app.get("/pokemon/all")
 def get_all_pokemon():
     try:
-        r = requests.get(url=api_url, headers=headers)
+        r = request_all_pokemon()
         return r.json()
     except Exception as err:
         print(err)
+        return err
 
 
-@app.get('/')
-def index():
-    return 'Index Page'
+@app.get("/pokemon/<string:id>")
+def get_pokemon_by_id(id):
+    try:
+        r = request_pokemon_by_id(id)
+        return r.json()
+    except Exception as err:
+        print(err)
+        return err
 
 
-@app.get("/pokemon")
+@app.get("/mypokemon")
 def get_pokemon():
     return pokemon
 
 
-@app.get("/pokemon/<int:id>")
-def get_pokemon_by_id(id):
-    return pokemon[id]
-
-
-@app.post("/pokemon")
+@app.post("/mypokemon")
 def add_pokemon():
     pokemon[list(pokemon)[-1] +
             1] = {"name": request.json["name"], "type": request.json["type"]}
