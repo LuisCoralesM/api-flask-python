@@ -42,3 +42,7 @@ def add_pokemon():
     pokemon[list(pokemon)[-1] +
             1] = {"name": request.json["name"], "type": request.json["type"]}
     return pokemon
+
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
