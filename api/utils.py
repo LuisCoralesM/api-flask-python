@@ -14,3 +14,7 @@ def request_all_pokemon():
 
 def request_pokemon_by_id(id: str):
     return requests.get(api_base_url + id, headers=headers)
+
+
+def request_pokemon_by_name(name: str):
+    return requests.get(api_base_url + name, headers=headers)

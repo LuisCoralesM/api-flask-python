@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, Response
 from utils import *
 
 
@@ -29,6 +29,46 @@ def get_pokemon_by_id(id):
     except Exception as err:
         print(err)
         return err
+
+
+@app.get("/pokemon_lbyl/<string:name>")
+def get_pokemon_by_name_lbyl(name):
+    try:
+        r = request_pokemon_by_name(name)
+        data = r.json()
+
+        if r.status_code == 404:
+            raise Exception("Pokemon not found")
+
+        if r.status_code != 200:
+            raise Exception("Unsuccessful request")
+
+        if data is None:
+            raise Exception("Pokemon not found")
+
+        return data
+    except Exception as err:
+        return Response(str(err), status=500)
+
+
+@app.get("/pokemon_eapf/<string:name>")
+def get_pokemon_by_name_eapf(name):
+    try:
+        r = request_pokemon_by_name(name)
+        return r.json()
+    except requests.exceptions.Timeout as err:
+        # Custom message and try again
+        # Log error
+        return err
+    except requests.exceptions.HTTPError as err:
+        # Custom message and try again
+        # Log error
+        return err
+    except requests.exceptions.RequestException as err:
+        # Custom error handling
+        # Check status code, etc
+        print(err)
+        return Response(str("Request error"))
 
 
 @app.get("/mypokemon")
